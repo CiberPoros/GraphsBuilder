@@ -71,7 +71,7 @@ namespace Core
                             return true;
                         }
                     }
-                    else if (colors[_numbersByMasks[toMask]] == 1)
+                    else if (colors[_numbersByMasks[toMask]] == 1 && _numbersByMasks[toMask] != prevs[_numbersByMasks[vertexMask]])
                     {
                         start = _numbersByMasks[toMask];
                         end = _numbersByMasks[vertexMask];
