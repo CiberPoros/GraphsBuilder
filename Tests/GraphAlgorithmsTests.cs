@@ -219,7 +219,125 @@ namespace Tests
             var result = GraphAlgorithms.GetAllBridges(graph);
 
             Assert.IsEmpty(result);
-        } 
+        }
+        #endregion
+
+        #region TryGetRandomCycle
+        [Test]
+        public void TryGetRandomCycle_OneVertexGraph_ReturnsFalse()
+        {
+            var graph = new BigInteger[] { 0 };
+
+            var result = GraphAlgorithms.TryGetRandomCycle(graph, out var _);
+
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        public void TryGetRandomCycle_TwoVertexesWithEdge_ReturnsFalse()
+        {
+            var adjacencyVectorGraph = new List<List<int>>()
+            {
+                new List<int>(),
+                new List<int>()
+            };
+
+            adjacencyVectorGraph[0].Add(1);
+            adjacencyVectorGraph[1].Add(0);
+
+            var graph = Utils.AdjacencyVectorToMaskVector(adjacencyVectorGraph);
+
+            var result = GraphAlgorithms.TryGetRandomCycle(graph, out var _);
+
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        public void GetAllBridges_CycleWith3Vertexes_ReturnsTrue()
+        {
+            var adjacencyVectorGraph = new List<List<int>>()
+            {
+                new List<int>(),
+                new List<int>(),
+                new List<int>()
+            };
+
+            adjacencyVectorGraph[0].Add(1);
+            adjacencyVectorGraph[1].Add(0);
+
+            adjacencyVectorGraph[1].Add(2);
+            adjacencyVectorGraph[2].Add(1);
+
+            adjacencyVectorGraph[2].Add(0);
+            adjacencyVectorGraph[0].Add(2);
+
+            var graph = Utils.AdjacencyVectorToMaskVector(adjacencyVectorGraph);
+
+            var result = GraphAlgorithms.TryGetRandomCycle(graph, out var _);
+
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public void GetAllBridges_CycleWith4Vertexes_ReturnsTrue()
+        {
+            var adjacencyVectorGraph = new List<List<int>>()
+            {
+                new List<int>(),
+                new List<int>(),
+                new List<int>(),
+                new List<int>()
+            };
+
+            adjacencyVectorGraph[0].Add(1);
+            adjacencyVectorGraph[1].Add(0);
+
+            adjacencyVectorGraph[1].Add(2);
+            adjacencyVectorGraph[2].Add(1);
+
+            adjacencyVectorGraph[2].Add(3);
+            adjacencyVectorGraph[3].Add(2);
+
+            adjacencyVectorGraph[3].Add(0);
+            adjacencyVectorGraph[0].Add(3);
+
+            var graph = Utils.AdjacencyVectorToMaskVector(adjacencyVectorGraph);
+
+            var result = GraphAlgorithms.TryGetRandomCycle(graph, out var _);
+
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public void GetAllBridges_GraphWith5VertexesWithoutCycle_ReturnsFalse()
+        {
+            var adjacencyVectorGraph = new List<List<int>>()
+            {
+                new List<int>(),
+                new List<int>(),
+                new List<int>(),
+                new List<int>(),
+                new List<int>()
+            };
+
+            adjacencyVectorGraph[0].Add(1);
+            adjacencyVectorGraph[1].Add(0);
+
+            adjacencyVectorGraph[1].Add(2);
+            adjacencyVectorGraph[2].Add(1);
+
+            adjacencyVectorGraph[2].Add(3);
+            adjacencyVectorGraph[3].Add(2);
+
+            adjacencyVectorGraph[2].Add(4);
+            adjacencyVectorGraph[4].Add(2);
+
+            var graph = Utils.AdjacencyVectorToMaskVector(adjacencyVectorGraph);
+
+            var result = GraphAlgorithms.TryGetRandomCycle(graph, out var _);
+
+            Assert.IsFalse(result);
+        }
         #endregion
     }
 }
