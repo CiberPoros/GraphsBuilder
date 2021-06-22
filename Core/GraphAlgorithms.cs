@@ -57,7 +57,7 @@ namespace Core
 
                 for (BigInteger toMask = 1; toMask < vertexMaskLimit; toMask <<= 1)
                 {
-                    if ((graph[_numbersByMasks[toMask]] & toMask) == 0)
+                    if ((graph[_numbersByMasks[vertexMask]] & toMask) == 0)
                     {
                         continue;
                     }
@@ -100,7 +100,7 @@ namespace Core
 
                 for (BigInteger toMask = 1; toMask < vertexMaskLimit; toMask <<= 1)
                 {
-                    if ((used & toMask) == 0 && (graph[_numbersByMasks[toMask]] & toMask) != 0)
+                    if ((used & toMask) == 0 && (graph[_numbersByMasks[vertexMask]] & toMask) != 0)
                     {
                         Dfs(toMask);
                     }
@@ -129,7 +129,7 @@ namespace Core
 
                 for (BigInteger toMask = 1; toMask < vertexMaskLimit; toMask <<= 1)
                 {
-                    if ((graph[_numbersByMasks[toMask]] & toMask) == 0)
+                    if ((graph[_numbersByMasks[vertexMask]] & toMask) == 0)
                     {
                         continue;
                     }
