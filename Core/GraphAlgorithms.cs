@@ -5,7 +5,7 @@ using System.Numerics;
 
 namespace Core
 {
-    public class GraphAlgorithms
+    public static class GraphAlgorithms
     {
         private const int VertexLimit = 1000;
         private static readonly Dictionary<BigInteger, int> _numbersByMasks;
