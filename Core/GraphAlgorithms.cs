@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 
 namespace Core
@@ -20,6 +21,67 @@ namespace Core
                 _numbersByMasks.Add(mask, i);
 
                 mask <<= 1;
+            }
+        }
+
+        public static bool TryGetRandomCycle(BigInteger[] graph, out int[] cycle)
+        {
+            BigInteger vertexMaskLimit = new BigInteger(1) << graph.Length;
+            int[] colors = new int[graph.Length];
+            int[] prevs = Enumerable.Repeat(-1, graph.Length).ToArray();
+
+            int start = -1;
+            int end = -1;
+
+            if (!Dfs(1))
+            {
+                cycle = null;
+                return false;
+            }
+
+            var result = new List<int>();
+            result.Add(start);
+            for (int vertex = end; vertex != start; vertex = prevs[vertex])
+            {
+                result.Add(vertex);
+            }
+            result.Add(start);
+            result.Reverse();
+
+            cycle = result.ToArray();
+            return true;
+
+            bool Dfs(BigInteger vertexMask)
+            {
+                colors[_numbersByMasks[vertexMask]] = 1;
+
+                for (BigInteger toMask = 1; toMask < vertexMaskLimit; toMask <<= 1)
+                {
+                    if ((graph[_numbersByMasks[toMask]] & toMask) == 0)
+                    {
+                        continue;
+                    }
+
+                    if (colors[_numbersByMasks[toMask]] == 0)
+                    {
+                        prevs[_numbersByMasks[toMask]] = _numbersByMasks[vertexMask];
+
+                        if (Dfs(toMask))
+                        {
+                            return true;
+                        }
+                    }
+                    else if (colors[_numbersByMasks[toMask]] == 1)
+                    {
+                        start = _numbersByMasks[toMask];
+                        end = _numbersByMasks[vertexMask];
+
+                        return true;
+                    }
+                }
+
+                colors[_numbersByMasks[vertexMask]] = 2;
+                return false;
             }
         }
 
@@ -67,6 +129,11 @@ namespace Core
 
                 for (BigInteger toMask = 1; toMask < vertexMaskLimit; toMask <<= 1)
                 {
+                    if ((graph[_numbersByMasks[toMask]] & toMask) == 0)
+                    {
+                        continue;
+                    }
+
                     if (toMask == prevVertexMask)
                     {
                         continue;
