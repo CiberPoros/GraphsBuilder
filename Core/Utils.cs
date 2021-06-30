@@ -21,5 +21,7 @@ namespace Core
 
             return result;
         }
+
+        public static BigInteger GetMinMaskValueFromSetMask(BigInteger setMask) => setMask - (setMask & (setMask - 1));
     }
 }

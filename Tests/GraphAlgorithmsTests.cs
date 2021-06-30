@@ -339,5 +339,62 @@ namespace Tests
             Assert.IsFalse(result);
         }
         #endregion
+
+        [Test]
+        public void TryGetPiecesByGammaAlgorithm_ExampleFromWiki_ReturnsTrue()
+        {
+            var adjacencyVectorGraph = new List<List<int>>()
+            {
+                new List<int>(),
+                new List<int>(),
+                new List<int>(),
+                new List<int>(),
+                new List<int>(),
+                new List<int>(),
+                new List<int>()
+            };
+
+            adjacencyVectorGraph[0].Add(1);
+            adjacencyVectorGraph[1].Add(0);
+
+            adjacencyVectorGraph[0].Add(5);
+            adjacencyVectorGraph[5].Add(0);
+
+            adjacencyVectorGraph[0].Add(3);
+            adjacencyVectorGraph[3].Add(0);
+
+            adjacencyVectorGraph[1].Add(2);
+            adjacencyVectorGraph[2].Add(1);
+
+            adjacencyVectorGraph[1].Add(3);
+            adjacencyVectorGraph[3].Add(1);
+
+            adjacencyVectorGraph[1].Add(4);
+            adjacencyVectorGraph[4].Add(1);
+
+            adjacencyVectorGraph[2].Add(3);
+            adjacencyVectorGraph[3].Add(2);
+
+            adjacencyVectorGraph[2].Add(4);
+            adjacencyVectorGraph[4].Add(2);
+
+            adjacencyVectorGraph[3].Add(4);
+            adjacencyVectorGraph[4].Add(3);
+
+            adjacencyVectorGraph[4].Add(5);
+            adjacencyVectorGraph[5].Add(4);
+
+            adjacencyVectorGraph[4].Add(6);
+            adjacencyVectorGraph[6].Add(4);
+
+            adjacencyVectorGraph[5].Add(6);
+            adjacencyVectorGraph[6].Add(5);
+
+            var graph = Utils.AdjacencyVectorToMaskVector(adjacencyVectorGraph);
+
+            var result = GraphAlgorithms.TryGetPiecesByGammaAlgorithm(graph, out var _);
+
+            Assert.IsTrue(result);
+        }
     }
 }
